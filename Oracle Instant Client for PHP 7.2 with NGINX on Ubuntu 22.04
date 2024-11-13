@@ -1,0 +1,39 @@
+Oracle Instant Client for PHP 7.2 with NGINX on Ubuntu 22.04
+---------------------
+
+Download Oracle Instant Client and SDK:
+https://www.oracle.com/database/technologies/instant-client/downloads.html
+
+in this case i needed Instant Client 12 2010 and sdk 19
+
+Install Required Packages:
+sudo apt update
+sudo apt install php7.2-dev php-pear build-essential libaio1
+
+
+Install Oracle Instant Client:
+sudo mkdir -p /opt/oracle
+sudo unzip instantclient-basic-linux.x64-*.zip -d /opt/oracle
+sudo unzip instantclient-sdk-linux.x64-*.zip -d /opt/oracle
+sudo ln -s /opt/oracle/instantclient_19_8 /opt/oracle/instantclient
+sudo sh -c "echo /opt/oracle/instantclient > /etc/ld.so.conf.d/oracle-instantclient.conf"
+sudo ldconfig
+
+Install the OCI8 PHP Extension:
+sudo pecl install oci8
+# Enter 'instantclient,/opt/oracle/instantclient' when prompted
+
+
+Enable OCI8 Extension in PHP:
+echo "extension=oci8.so" | sudo tee -a /etc/php/7.2/fpm/php.ini
+
+Restart PHP-FPM and NGINX:
+sudo systemctl restart php7.2-fpm
+sudo systemctl restart nginx
+
+Install OCI8 for PHP 7.2: Use the following command to install the compatible version:
+sudo pecl install oci8-2.2.0
+
+also refer 
+https://gist.github.com/Yukibashiri/cebaeaccbe531665a5704b1b34a3498e?permalink_comment_id=3107003
+
